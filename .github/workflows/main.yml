@@ -1,1 +1,10 @@
-
+name: say_hello
+on: [push]
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout Code
+      - name: Greeting Message
+        run: echo "Hello, world!"
