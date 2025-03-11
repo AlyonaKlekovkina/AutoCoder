@@ -1,10 +1,14 @@
-name: say_hello
-on: [push]
+name: Access Issue Information
+on:
+  issues:
+    types: [opened, reopened]
+
 jobs:
-  say_hello:
+  access_issue_info:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         name: Checkout Code
-      - name: Greeting Message
-        run: echo "Hello, world!"
+      - name: Print Issue Information
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
