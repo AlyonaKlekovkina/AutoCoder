@@ -12,3 +12,5 @@ jobs:
       - name: Print Issue Information
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          echo "Issue Number: ${ISSUE_NUMBER}"
