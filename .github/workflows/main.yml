@@ -3,11 +3,6 @@ on:
   issues:
     types: [opened, reopened]
 
-env:
-  GITHUB_TOKEN="$1"
-  REPOSITORY="$2"
-  ISSUE_NUMBER="$3"
-  OPENAI_API_KEY="$4"
 
 jobs:
   access_issue_info:
@@ -17,7 +12,10 @@ jobs:
         name: Checkout Code
       - name: Print Issue Information
         env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPOSITORY: AlyonaKlekovkina/AutoCoder
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
