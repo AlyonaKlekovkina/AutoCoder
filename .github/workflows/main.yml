@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Make script executable
-        run: chmod +x ./scripts/script.sh
+        run: chmod +x ./script.sh
 
       - name: Generate Code with ChatGPT
         id: generate_code
@@ -20,10 +20,7 @@ jobs:
             REPOSITORY: ${{ github.repository }}
             ISSUE_NUMBER: ${{ github.event.issue.number }}
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          mkdir -p autocoder-bot
-          ./scripts/script.sh "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
-          ls -R autocoder-bot/
+        run: ./script.sh "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -31,13 +28,11 @@ jobs:
           name: autocoder-artifact
           path: autocoder-bot/
 
-      - name: Download artifact (for testing)
-        if: always()
+      - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: autocoder-artifact
-          path: autocoder-artifact-download
+          path: autocoder-artifact
 
-      - name: List Artifact Contents
-        if: always()
-        run: ls -R autocoder-artifact-download/
+      - name: Display Generated Code using the ls command
+        run: ls -R autocoder-artifact/
