@@ -17,7 +17,7 @@ jobs:
             ISSUE_NUMBER: ${{ github.event.issue.number }}
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
             ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
-        run: scripts/script.sh ${{ env.key }} ${{ env.key }}
+        run: chmod +x scripts/script.sh
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
