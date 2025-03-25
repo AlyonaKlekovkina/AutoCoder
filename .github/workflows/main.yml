@@ -41,5 +41,5 @@ jobs:
 
       - name: List generated files
         run: |
-          echo "Listing all generated files recursively:"
-          find autocoder-artifact-download -type f -exec ls -la {} \;
+          echo "Complete recursive directory listing:"
+          ls -laR autocoder-artifact-download
