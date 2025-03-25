@@ -9,10 +9,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set execute permission on script
+        
+      - name:  Make script executable
         run: chmod +x scripts/script.sh
-        shell: bash
 
       - name: Generate Code with ChatGPT
         id: generate_code
