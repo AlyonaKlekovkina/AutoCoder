@@ -1,4 +1,4 @@
-name: Access Issue Information
+name: Interacting with ChatGPT
 on:
   issues:
     types: [opened, reopened, labeled]
@@ -10,10 +10,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Make script executable
-        run: |
-            chmod +x scripts/script.sh
-          
+      - name: Set execute permission on script
+        run: chmod +x scripts/script.sh
+        shell: bash
+
       - name: Generate Code with ChatGPT
         id: generate_code
         env:
