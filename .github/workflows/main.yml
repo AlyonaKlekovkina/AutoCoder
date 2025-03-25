@@ -41,4 +41,5 @@ jobs:
 
       - name: List generated files
         run: |
-          ls -lR downloaded-artifact
+          echo "Listing all generated files recursively:"
+          find autocoder-artifact-download -type f -exec ls -la {} \;
