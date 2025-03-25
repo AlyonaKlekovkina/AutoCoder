@@ -21,19 +21,23 @@ jobs:
             ISSUE_NUMBER: ${{ github.event.issue.number }}
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
+          mkdir -p autocoder-bot
           ./scripts/script.sh "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
+          ls -R autocoder-bot/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: autocoder-artifact
-          path: ~/autocoder-bot/*
+          path: autocoder-bot/
 
-      - name: Download artifact
+      - name: Download artifact (for testing)
+        if: always()
         uses: actions/download-artifact@v3
         with:
           name: autocoder-artifact
-          path: ~/autocoder-artifact
+          path: autocoder-artifact-download
 
       - name: List Artifact Contents
-        run: ls -R autocoder-artifact/
+        if: always()
+        run: ls -R autocoder-artifact-download/
