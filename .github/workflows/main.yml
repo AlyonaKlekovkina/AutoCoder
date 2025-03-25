@@ -7,9 +7,15 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     runs-on: ubuntu-latest
     steps:
-      # New dedicated step to make script executable
+      # First checkout the repository to access the script
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Explicit step just for making script executable
       - name: Make script executable
-        run: chmod +x scripts/script.sh
+        run: |
+          chmod +x ./scripts/script.sh
+          ls -la ./scripts/script.sh  # Optional verification
 
       - name: Generate Code with ChatGPT
         id: generate_code
@@ -22,17 +28,17 @@ jobs:
         run: ./scripts/script.sh
 
       - name: Upload Artifact
-        id: upload_artifact
         uses: actions/upload-artifact@v3
         with:
-            name: autocoder-artifact
-            path: autocoder-artifact/*
-            
-      - name: Downloading artifact to the home directory
+          name: autocoder-artifact
+          path: autocoder-artifact/*
+
+      - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: autocoder-artifact
-          path: ~/autocoder-artifact
+          path: downloaded-artifact
 
-      - name: Display Generated Code using the ls command
-        run: ls -l ~/autocoder-artifact
+      - name: List generated files
+        run: |
+          ls -lR downloaded-artifact
