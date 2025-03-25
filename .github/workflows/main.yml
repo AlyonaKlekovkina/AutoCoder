@@ -4,16 +4,15 @@ on:
     types: [opened, reopened, labeled]
 jobs:
   access_issue_info:
-    if: ${{ (github.event.action == 'labeled' && github.event.label.name == 'autocoder-bot') || (github.event.action != 'labeled' && contains(join(github.event.issue.labels.*.name, ','), 'autocoder-bot')) }}
+    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     runs-on: ubuntu-latest
     steps:
 
       - name: Generate Code with ChatGPT
         id: generate_code
-        #if: env.IS_AUTOCODER_BOT_LABEL == 'true'
         env:
             GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-            REPOSITORY: AlyonaKlekovkina/AutoCoder
+            REPOSITORY: ${{ github.repository }}
             ISSUE_NUMBER: ${{ github.event.issue.number }}
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
             ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
