@@ -39,7 +39,6 @@ jobs:
           name: autocoder-artifact
           path: downloaded-artifact
 
-      - name: List generated files
+      - name: Display Generated Code using the ls command
         run: |
-          echo "Complete recursive directory listing:"
           ls -laR autocoder-artifact-download
