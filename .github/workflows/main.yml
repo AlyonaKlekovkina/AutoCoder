@@ -10,7 +10,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set execute permission
+      # Explicit step to make script executable (must be separate)
+      - name: Make script executable
         run: chmod +x scripts/script.sh
 
       - name: Generate Code with ChatGPT
@@ -20,7 +21,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: ./scripts/script.sh $GITHUB_TOKEN $REPOSITORY $ISSUE_NUMBER $OPENAI_API_KEY
+        run: ./scripts/script.sh "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
