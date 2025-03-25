@@ -12,7 +12,7 @@ jobs:
 
       # This must be exactly this step name and action
       - name: Make script executable
-        run: chmod +x AutoCoder/scripts/script.sh
+        run: chmod +x scripts/script.sh
 
       - name: Generate code
         id: generate-code
