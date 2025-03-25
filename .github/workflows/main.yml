@@ -7,6 +7,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     runs-on: ubuntu-latest
     steps:
+      # New dedicated step to make script executable
       - name: Make script executable
         run: chmod +x scripts/script.sh
 
