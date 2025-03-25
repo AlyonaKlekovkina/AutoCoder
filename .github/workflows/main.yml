@@ -10,13 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check issue label
-        id: check_label
-        run: |
-          echo "IS_AUTOCODER_BOT_LABEL=$(echo '${{ join(github.event.issue.labels.*.name, ', ') }}' | grep -w 'autocoder-bot' > /dev/null && echo 'true' || echo 'false')" >> $GITHUB_ENV
-      
+        
+        if: ${{ (github.event.action == 'labeled' && github.event.label.name == 'autocoder-bot') || (github.event.action != 'labeled' && contains(join(github.event.issue.labels.*.name, ','), 'autocoder-bot')) }}
+    
       - name: Generate Code with ChatGPT
         id: generate_code
-        if: env.IS_AUTOCODER_BOT_LABEL == 'true'
+        #if: env.IS_AUTOCODER_BOT_LABEL == 'true'
         env:
             GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
             REPOSITORY: AlyonaKlekovkina/AutoCoder
