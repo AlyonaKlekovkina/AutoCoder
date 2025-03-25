@@ -27,13 +27,13 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: autocoder-artifact
-          path: autocoder-bot/*
+          path: ~/autocoder-bot/*
 
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: autocoder-artifact
-          path: autocoder-artifact/
+          path: ~/autocoder-artifact
 
       - name: List Artifact Contents
         run: ls -R autocoder-artifact/
