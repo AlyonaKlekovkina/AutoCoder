@@ -37,8 +37,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: autocoder-artifact
-          path: downloaded-artifact
+          path: autocoder-artifact
 
       - name: Display Generated Code using the ls command
         run: |
-          ls -laR autocoder-artifact-download
+          ls -laR autocoder-artifact
