@@ -30,4 +30,4 @@ jobs:
           path: ~/autocoder-artifact/autocoder-artifact.txt
 
       - name: Display Generated Code using the ls command
-          $ ls -l
+        run: ls -l
