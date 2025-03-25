@@ -12,6 +12,7 @@ jobs:
 
       - name: Make script executable
         run: chmod +x scripts/script.sh
+            ls -la scripts/
 
       - name: Generate Code with ChatGPT
         id: generate_code
