@@ -1,4 +1,4 @@
-name: Access Issue Information
+name: generate code
 on:
   issues:
     types: [opened, reopened, labeled]
