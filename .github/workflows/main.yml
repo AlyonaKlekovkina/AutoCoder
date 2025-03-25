@@ -9,20 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        name: Checkout Code
-      - name: Print Issue Information
+      - name: Generate Code with ChatGPT
+        id: generate_code
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          REPOSITORY: AlyonaKlekovkina/AutoCoder
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
-          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
-        run: |
-          echo "Issue Number: ${ISSUE_NUMBER}"
-          echo "Issue Title: ${ISSUE_TITLE}"
-          echo "Issue Body: ${ISSUE_BODY}"
-          echo "Issue Assignees: ${ISSUE_ASSIGNEES}"
-          echo "Issue Labels: ${ISSUE_LABELS}"
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            REPOSITORY: AlyonaKlekovkina/AutoCoder
+            ISSUE_NUMBER: ${{ github.event.issue.number }}
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
+        run: scripts/script.sh ${{ env.key }} ${{ env.key }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+            path: autocoder-artifact.txt
+      - name: Downloading artifact to the home directory
+        uses: actions/download-artifact@v3
+        with:
+          name: time-artifact
+          path: ~/autocoder-artifact/autocoder-artifact.txt
+
+      - name: Display Generated Code using the ls command
+          $ ls -l
