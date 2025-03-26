@@ -45,6 +45,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: autocoder-branch-${{ github.event.issue.number }}
           base: main
           labels: autocoder-bot
+          title: "Autocoder fix for issue #${{ github.event.issue.number }}"
+          body: "Automated code generation for issue"
