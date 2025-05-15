@@ -23,9 +23,10 @@ jobs:
       - name: Generate Code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: 'AlyonaKlekovkina/AutoCoder'
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: ./scripts/script.sh "$GITHUB_TOKEN" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
+        run: ./scripts/script.sh "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
 
       - name: Set up Git config
         run: |
