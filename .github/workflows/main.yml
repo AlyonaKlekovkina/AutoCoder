@@ -2,12 +2,14 @@ name: First Workflow
                                          
 on: push   
                                                
-jobs:                    
-  say_hello:                                               
+jobs:
+                         
+  first-job:                           
+    name: say_hello                    
     runs-on: ubuntu-latest                           
-    steps:            
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
+    steps:
+
+      #step 1                           
       - name: Print a greeting                             
         run: echo "Hello, world"
+      - uses: actions/checkout@v2
