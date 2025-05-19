@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
         ISSUE_NUMBER: ${{ github.event.issue.number }}
-        ISSUE_TITLE: $${{ github.event.issue.title }}
-        ISSUE_BODY: $${{ github.event.issue.body }}
-        ISSUE_ASSIGNEES: $${{ join(github.event.issue.assignees.*.login, ', ') }}
-        ISSUE_LABLES: $${{ join(github.event.issue.labels.*.name, ', ') }}
+        ISSUE_TITLE: ${{ github.event.issue.title }}
+        ISSUE_BODY: ${{ github.event.issue.body }}
+        ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
+        ISSUE_LABLES: ${{ join(github.event.issue.labels.*.name, ', ') }}
     
     steps:
       - name: Checkout code
