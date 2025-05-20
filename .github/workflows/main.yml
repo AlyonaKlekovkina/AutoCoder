@@ -7,12 +7,12 @@ on:
 jobs:
   access_issue_info:
     runs-on: ubuntu-latest
-    if: github.event.issue.label == 'autocoder-bot'
+    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: chmod
+      - name: Make script executable
         run: chmod +x ./scripts/script.sh
 
 
