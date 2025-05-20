@@ -2,15 +2,19 @@ name: Access Issue Information
 
 on: 
   issues: 
-    types: [opened, reopened]
+    types: [opened, reopened, labeled]
 
 jobs:
   access_issue_info:
     runs-on: ubuntu-latest
+    if: github.event.issue.label == 'autocoder-bot'
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: chmod
+        run: chmod +x ./scripts/script.sh
+
 
       - name: Generate Code with ChatGPT
         id: generate_code
@@ -18,12 +22,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           REPOSITORY: AlyonaKlekovkina/AutoCoder
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          ISSUE_LABEL: ${{ github.event.issue.label }}
-        run: chmod +x ./scripts/script.sh
+        
+        run: ./scripts/script.sh ${{GITHUB_TOKEN}} ${{REPOSITORY}} ${{ISSUE_NUMBER}} ${{OPENAI_API_KEY}}
       - name: Upload Artifact
-        run: |
-          if [[ "$ISSUE_LABEL" = 'autocoder-bot' ]]; then
-            echo "Issue lable detected"
-          fi
+        uses: actions/upload-artifact@v4
+        with:
+          name: autocoder-artifact
+          path: autocoder-bot/
