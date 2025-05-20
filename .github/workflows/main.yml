@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Create output directory
+        run: mkdir -p autocoder-bot
+        
       - name: Make script executable
         run: chmod +x ./scripts/script.sh
 
@@ -25,16 +29,19 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         
         run: ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
+      
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: autocoder-artifact
           path: autocoder-bot/
+          
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:  
           name: autocoder-artifact
           path: autocoder-artifact/
+          
       - name: Display Generated Code using the ls command
         run: |
           ls -R autocoder-bot/
