@@ -20,9 +20,10 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ISSUE_LABEL: ${{ github.event.issue.label }}
         run: chmod +x ./scripts/script.sh
       - name: Upload Artifact
         run: |
-          if [[ "$ISSUE_LABLE" = 'autocoder-bot' ]]; then
+          if [[ "$ISSUE_LABEL" = 'autocoder-bot' ]]; then
             echo "Issue lable detected"
           fi
