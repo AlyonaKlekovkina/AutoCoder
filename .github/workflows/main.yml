@@ -28,7 +28,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         
-        run: ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
+        run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ secrets.OPENAI_API_KEY }}
       
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -43,4 +43,4 @@ jobs:
           path: autocoder-artifact/
           
       - name: Display Generated Code using the ls command
-        run: ls -lR autocoder-bot
+        run: ls -R autocoder-artifact/
