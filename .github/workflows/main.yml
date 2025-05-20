@@ -43,5 +43,4 @@ jobs:
           path: autocoder-artifact/
           
       - name: Display Generated Code using the ls command
-        run: |
-          ls -laR .
+        run: ls -lR autocoder-artifact
