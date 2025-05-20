@@ -44,4 +44,4 @@ jobs:
           
       - name: Display Generated Code using the ls command
         run: |
-          ls -laR autocoder-artifact/
+          ls -laR .
