@@ -67,7 +67,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          always-create: true
           branch: autocoder-branch-${{ github.event.issue.number }}
           title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
           body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
