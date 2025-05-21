@@ -66,7 +66,7 @@ jobs:
         run: |
           git add .
           git commit -m "Autocoder generated code for issue #${{ github.event.issue.number }}" || echo "No changes to commit"
-          git pull origin autocoder-branch-${{ github.event.issue.number }} --rebase || echo "Nothing to pull or branch doesn't exist"
+          git pull origin autocoder-branch-${{ github.event.issue.number }} --allow-unrelated-histories || echo "Nothing to pull or branch doesn't exist"
           git push origin autocoder-branch-${{ github.event.issue.number }}
           
 
