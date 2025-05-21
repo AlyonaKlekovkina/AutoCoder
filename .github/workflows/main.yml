@@ -66,7 +66,6 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
           branch: autocoder-branch-${{ github.event.issue.number }}
           title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
           body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
