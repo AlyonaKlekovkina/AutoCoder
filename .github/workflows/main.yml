@@ -65,8 +65,7 @@ jobs:
       - name: Commit changes
         run: |
           git add .
-          git commit -m "Autocoder generated code for issue #${{ github.event.issue.number }}" || echo "No changes to commit"
-          git pull origin autocoder-branch-${{ github.event.issue.number }} --allow-unrelated-histories || echo "Nothing to pull or branch doesn't exist"
+          git commit -m "Autocoder generated code for issue #${{ github.event.issue.number }}"
           git push --force origin autocoder-branch-${{ github.event.issue.number }}          
 
       - name: Create Pull Request
