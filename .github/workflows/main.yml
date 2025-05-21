@@ -67,3 +67,4 @@ jobs:
           title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
           body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
           labels: autocoder-bot
+          committer: "autocoder-bot <actions@github.com>"
