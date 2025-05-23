@@ -1,7 +1,7 @@
 name: Access Issue Information
 
-on: 
-  issues: 
+on:
+  issues:
     types: [opened, reopened, labeled]
 
 permissions:
@@ -12,7 +12,7 @@ jobs:
   access_issue_info:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,49 +22,12 @@ jobs:
           git config --global user.name "autocoder-bot"
           git config --global user.email "actions@github.com"
 
-      - name: Create output directory
-        run: mkdir -p autocoder-bot
-
-      - name: Make script executable
-        run: chmod +x ./scripts/script.sh
-
-
-      - name: Generate Code with ChatGPT
-        id: generate_code
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          REPOSITORY: AlyonaKlekovkina/AutoCoder
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        
-        run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ secrets.OPENAI_API_KEY }}
-      
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      - name: Run AutoCoder Composite Action
+        uses: ./ # uses the local composite action in the same repo
         with:
-          name: autocoder-artifact
-          path: autocoder-bot/
-          
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:  
-          name: autocoder-artifact
-          path: autocoder-artifact/
-          
-      - name: Display Generated Code using the ls command
-        run: ls -R autocoder-artifact/
-
-      - name: Copy generated files into repo
-        run: |
-          cp -r autocoder-artifact/* .      
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: autocoder-branch-${{ github.event.issue.number }}
-          title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
-          body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
-          labels: autocoder-bot
-          committer: "autocoder-bot <actions@github.com>"
-          author: "autocoder-bot <actions@github.com>"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          repository: AlyonaKlekovkina/AutoCoder
+          issue_number: ${{ github.event.issue.number }}
+          script_path: ./scripts/script.sh
+          issue_label: 'autocoder-bot'
