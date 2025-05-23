@@ -1,4 +1,3 @@
-
 name: 'AutoCoder'
 description: 'This action automates the process of generating code from GitHub issues using OpenAIs ChatGPT and subsequently creates a pull request with the generated code for review.'
 author: 'AlyonaKlekovkina'
@@ -19,7 +18,7 @@ inputs:
   SCRIPT_PATH:
     description: 'Path to the script that interacts with ChatGPT and generates code.'
     required: true
-  ISSUE_LABEL:
+  LABEL:
     description: 'The label assigned to GitHub issues that should be processed by the AutoCoder action. Only issues with this label will trigger the code generation process.'
     required: true
     default: 'autocoder-bot'
@@ -28,30 +27,29 @@ outputs:
   pull_request_url:
     description: 'The URL of the pull request that has been automatically created, containing the auto-generated code for review and potential merging.'
 
-
 runs:
   using: 'composite'
   steps:
     - name: Greet Users
       run: echo "Hello, welcome to AutoCoder! Let's generate some code."
       shell: bash
-      
+
     - name: Generate Code from Issue
       run: |
-        bash ${{ inputs.script_path }} ${{ inputs.github_token }} ${{ inputs.repository }} ${{ inputs.issue_number }} ${{ inputs.openai_api_key }}
+        bash ${{ inputs.SCRIPT_PATH }} ${{ inputs.GITHUB_TOKEN }} ${{ inputs.REPOSITORY }} ${{ inputs.ISSUE_NUMBER }} ${{ inputs.OPENAI_API_KEY }}
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ inputs.github_token }}
-        OPENAI_API_KEY: ${{ inputs.openai_api_key }}
-        
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
+
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
-        token: ${{ inputs.github_token }}
-        branch: autocoder-branch-${{ inputs.issue_number }}
-        title: "Autocoder generated code for issue #${{ inputs.issue_number }}"
-        body: "This pull request includes code automatically generated for issue #${{ inputs.issue_number }}."
-        labels: ${{ inputs.issue_label }}
-        commit-message: "Add code for issue #${{ inputs.issue_number }}"
+        token: ${{ inputs.GITHUB_TOKEN }}
+        branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        title: "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
+        body: "This pull request includes code automatically generated for issue #${{ inputs.ISSUE_NUMBER }}."
+        labels: ${{ inputs.LABEL }}
+        commit-message: "Add code for issue #${{ inputs.ISSUE_NUMBER }}"
         committer: "autocoder-bot <actions@github.com>"
         author: "autocoder-bot <actions@github.com>"
