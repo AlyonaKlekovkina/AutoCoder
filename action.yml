@@ -35,14 +35,14 @@ runs:
       shell: bash
       
     - name: Checkout
-        uses: actions/checkout@v2
+      uses: actions/checkout@v2
         
     - name: AutoCoder Composite Action
-        uses: your-username/autocoder-action@v1
-        with:
-          github_token: $\{{ secrets.GITHUB_TOKEN }}
-          openai_api_key: $\{{ secrets.OPENAI_API_KEY }}
-          issue_label: 'autocoder'
+      uses: AlyonaKlekovkina/autocoder-action@v1
+      with:
+        GITHUB_TOKEN: $\{{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: $\{{ secrets.OPENAI_API_KEY }}
+        LABEL: 'autocoder'
 
     - name: Make script executable
       run: chmod +x ${{ inputs.SCRIPT_PATH }}
