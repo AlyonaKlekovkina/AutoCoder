@@ -33,9 +33,16 @@ runs:
     - name: Greet Users
       run: echo "Hello, welcome to AutoCoder! Let's generate some code."
       shell: bash
-
-    - name: Checkout code
-      uses: actions/checkout@v4
+      
+    - name: Checkout
+        uses: actions/checkout@v2
+        
+    - name: AutoCoder Composite Action
+        uses: your-username/autocoder-action@v1
+        with:
+          github_token: $\{{ secrets.GITHUB_TOKEN }}
+          openai_api_key: $\{{ secrets.OPENAI_API_KEY }}
+          issue_label: 'autocoder'
 
     - name: Make script executable
       run: chmod +x ${{ inputs.SCRIPT_PATH }}
