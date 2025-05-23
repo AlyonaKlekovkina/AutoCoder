@@ -34,6 +34,9 @@ runs:
       run: echo "Hello, welcome to AutoCoder! Let's generate some code."
       shell: bash
 
+    - name: Checkout code
+        uses: actions/checkout@v4
+
     - name: Make script executable
       run: chmod +x ${{ inputs.SCRIPT_PATH }}
       shell: bash
