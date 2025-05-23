@@ -56,6 +56,13 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
+        
+    - name: Commit generated files
+      run: |
+        git add .
+        git commit -m "Add generated code for issue #${{ inputs.ISSUE_NUMBER }}"
+        git push origin HEAD:autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+      shell: bash
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
