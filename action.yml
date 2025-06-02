@@ -29,7 +29,7 @@ outputs:
 
 runs:
   using: 'composite'
-    steps:
+  steps:
     - name: Greet Users
       run: echo "Hello, welcome to AutoCoder! Let's generate some code."
       shell: bash
