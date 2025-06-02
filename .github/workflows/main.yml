@@ -19,7 +19,7 @@ jobs:
 
 
       - name: AutoCoder Composite Action
-        uses: AlyonaKlekovkina/autocoder-action@v1
+        uses: AlyonaKlekovkina/autocoder-action@v4
         with:
           github_token: $\{{ secrets.GITHUB_TOKEN }}
           repository: AlyonaKlekovkina/AutoCoder
