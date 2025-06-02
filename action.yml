@@ -43,11 +43,14 @@ runs:
     - name: Generate code
       run: |
         chmod +x ${{ inputs.script_path }}
-        ${{ inputs.script_path }} ${{ inputs.issue_number }} ${{ inputs.openai_api_key }}
+        ${{ inputs.script_path }}
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
+        REPOSITORY: ${{ inputs.repository }}
+        ISSUE_NUMBER: ${{ inputs.issue_number }}
         OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+        LABEL: ${{ inputs.label }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
