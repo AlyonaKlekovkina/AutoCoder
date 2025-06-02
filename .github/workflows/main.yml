@@ -1,4 +1,4 @@
-name: Access Issue Information
+name: AutoCodeGen
 
 on:
   issues:
@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  access_issue_info:
+  generate_code:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
 
@@ -17,17 +17,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set Git identity
-        run: |
-          git config --global user.name "autocoder-bot"
-          git config --global user.email "actions@github.com"
 
-      - name: Run AutoCoder Composite Action
-        uses: ./ # uses the local composite action in the same repo
+      - name: AutoCoder Composite Action
+        uses: AlyonaKlekovkina/autocoder-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          github_token: $\{{ secrets.GITHUB_TOKEN }}
           repository: AlyonaKlekovkina/AutoCoder
           issue_number: ${{ github.event.issue.number }}
+          openai_api_key: $\{{ secrets.OPENAI_API_KEY }}
           script_path: ./scripts/script.sh
-          issue_label: 'autocoder-bot'
+          label: 'autocoder'
