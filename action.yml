@@ -35,11 +35,13 @@ runs:
       shell: bash
     - name: Generate Code from Issue
       run: |
-        # The script that interacts with ChatGPT and generates code goes here.
+        chmod +x ${{ inputs.script_path }}
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+
+        
     - name: Create Pull Request
       run: |
         chmod +x ${{ inputs.script_path }}
