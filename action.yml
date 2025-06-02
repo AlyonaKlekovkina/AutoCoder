@@ -49,7 +49,7 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         REPOSITORY: ${{ inputs.repository }}
         ISSUE_NUMBER: ${{ inputs.issue_number }}
-        OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
         LABEL: ${{ inputs.label }}
 
     - name: Create Pull Request
