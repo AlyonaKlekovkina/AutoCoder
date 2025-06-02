@@ -4,7 +4,7 @@ author: 'AlyonaKlekovkina'
 
 inputs:
   github_token:
-    description: 'Personal access token (PAT) used for GitHub API authentication. This token is required to create pull requests and handle other repository interactions.'
+    description: 'Personal access token (PAT) used for GitHub API authentication.'
     required: true
   repository:
     description: 'Repository where the action will be executed (e.g., user/repo).'
@@ -13,69 +13,49 @@ inputs:
     description: 'Issue number that triggered the action.'
     required: true
   openai_api_key:
-    description: 'API key for OpenAI, enabling interactions with the ChatGPT service to generate code based on issue descriptions.'
+    description: 'API key for OpenAI.'
     required: true
   script_path:
     description: 'Path to the script that interacts with ChatGPT and generates code.'
     required: true
   label:
-    description: 'The label assigned to GitHub issues that should be processed by the AutoCoder action. Only issues with this label will trigger the code generation process.'
+    description: 'The label that triggers the action.'
     required: true
     default: 'autocoder-bot'
 
 outputs:
   pull_request_url:
-    description: 'The URL of the pull request that has been automatically created, containing the auto-generated code for review and potential merging.'
+    description: 'The URL of the created pull request.'
 
 runs:
   using: 'composite'
   steps:
-    - name: Greet Users
-      run: echo "Hello, welcome to AutoCoder! Let's generate some code."
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up environment
+      run: |
+        git config --global user.name "autocoder-bot"
+        git config --global user.email "actions@github.com"
+        mkdir -p autocoder-bot
       shell: bash
-    - name: Generate Code from Issue
+
+    - name: Generate code
       run: |
         chmod +x ${{ inputs.script_path }}
+        ${{ inputs.script_path }} ${{ inputs.issue_number }} ${{ inputs.openai_api_key }}
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         OPENAI_API_KEY: ${{ inputs.openai_api_key }}
-
-        
-    - name: Create Pull Request
-      run: |
-        chmod +x ${{ inputs.script_path }}
-      shell: bash
-      env:
-        github_token: ${{ inputs.github_token }}
-
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set Git identity
-      run: |
-        git config --global user.name "autocoder-bot"
-        git config --global user.email "actions@github.com"
-      shell: bash
-    
-    - name: Create output directory
-      run: mkdir -p autocoder-bot
-      
-
-    - name: Commit generated files
-      run: |
-        git add .
-        git commit -m "Add generated code for issue #${{ inputs.issue_number }}"
-        git push origin HEAD:autocoder-branch-${{ inputs.issue_number }}
-      shell: bash
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ inputs.github_token }}
         branch: autocoder-branch-${{ inputs.issue_number }}
-        title: "Autocoder generated code for issue #${{ inputs.issue_number }}"
-        body: "This pull request includes code automatically generated for issue #${{ inputs.issue_number }}."
+        title: "Autocoder: Code for issue #${{ inputs.issue_number }}"
+        body: "Automatically generated code for issue #${{ inputs.issue_number }}"
         labels: ${{ inputs.label }}
         commit-message: "Add code for issue #${{ inputs.issue_number }}"
         committer: "autocoder-bot <actions@github.com>"
