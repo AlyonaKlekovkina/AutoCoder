@@ -2,7 +2,7 @@ name: AutoCodeGen
 
 on:
   issues:
-    types: [opened, reopened, labeled]
+    types: [labeled, opened, reopened]
 
 permissions:
   contents: write
@@ -17,13 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-
-      - name: AutoCoder Composite Action
+      - name: AutoCoder Action
         uses: AlyonaKlekovkina/autocoder-action@v4
         with:
-          github_token: $\{{ secrets.GITHUB_TOKEN }}
-          repository: AlyonaKlekovkina/AutoCoder
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
           issue_number: ${{ github.event.issue.number }}
-          openai_api_key: $\{{ secrets.OPENAI_API_KEY }}
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           script_path: ./scripts/script.sh
-          label: 'autocoder'
+          label: 'autocoder-bot'
