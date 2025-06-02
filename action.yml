@@ -30,20 +30,17 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Greet Users
-      run: echo "Hello, welcome to AutoCoder! Let's generate some code."
-      shell: bash
-      
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        
-    - name: Set up Git credentials
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set Git identity
       run: |
         git config --global user.name "autocoder-bot"
         git config --global user.email "actions@github.com"
       shell: bash
+    
+    - name: Create output directory
+      run: mkdir -p autocoder-bot
 
     - name: Make script executable
       run: chmod +x ${{ inputs.SCRIPT_PATH }}
@@ -51,11 +48,13 @@ runs:
 
     - name: Generate Code from Issue
       run: |
-        bash ${{ inputs.SCRIPT_PATH }} ${{ inputs.GITHUB_TOKEN }} ${{ inputs.REPOSITORY }} ${{ inputs.ISSUE_NUMBER }} ${{ inputs.OPENAI_API_KEY }}
+        bash ${{ inputs.SCRIPT_PATH }} ${{ secrets.GH_TOKEN }} ${{ inputs.REPOSITORY }} ${{ inputs.ISSUE_NUMBER }} ${{ secrets.OPENAI_API_KEY }}
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPOSITORY: AlyonaKlekovkina/AutoCoder
+          ISSUE_NUMBER: ${{ inputs.issue.number }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     - name: Commit generated files
       run: |
