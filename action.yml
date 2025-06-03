@@ -12,7 +12,7 @@ inputs:
   issue_number:
     description: 'Issue number that triggered the action.'
     required: true
-  openai_api_key:
+  OPENAI_API_KEY:
     description: 'API key for OpenAI.'
     required: true
   script_path:
