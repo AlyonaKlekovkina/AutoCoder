@@ -32,16 +32,6 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: AutoCoder Action
-      uses: AlyonaKlekovkina/Autocoder@v1.0.0
-      with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} 
-          SCRIPT_PATH: ./scripts/script.sh
-          LABEL: 'autocoder-bot'
 
     - name: Set up environment
       run: |
@@ -50,20 +40,25 @@ runs:
         mkdir -p autocoder-bot
       shell: bash
 
-    - name: Generate code
+    - name: Greet Users
+      run: echo "Hello, welcome to AutoCoder! Let's generate some code."
+      shell: bash
+
+    - name: Generate Code from Issue
       run: |
         chmod +x ${{ inputs.SCRIPT_PATH }}
         ${{ inputs.SCRIPT_PATH }}
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
         REPOSITORY: ${{ inputs.REPOSITORY }}
         ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
-        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
-        LABEL: ${{ inputs.LABEL }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
         branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
