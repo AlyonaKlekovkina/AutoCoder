@@ -3,7 +3,7 @@ description: 'This action automates the process of generating code from GitHub i
 author: 'AlyonaKlekovkina'
 
 inputs:
-  GITHUB_TOKEN:
+  GH_TOKEN:
     description: 'Personal access token (PAT) used for GitHub API authentication.'
     required: true
   REPOSITORY:
@@ -49,7 +49,7 @@ runs:
       run: |
         chmod +x ${{ inputs.SCRIPT_PATH }}
         ${{ inputs.SCRIPT_PATH }} \
-          "${{ inputs.GITHUB_TOKEN }}" \
+          "${{ inputs.GH_TOKEN }}" \
           "${{ inputs.REPOSITORY }}" \
           "${{ inputs.ISSUE_NUMBER }}" \
           "${{ inputs.OPENAI_API_KEY }}"
@@ -58,7 +58,7 @@ runs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
-        token: ${{ inputs.GITHUB_TOKEN }}
+        token: ${{ inputs.GH_TOKEN }}
         branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
         title: "Autocoder: Code for issue #${{ inputs.ISSUE_NUMBER }}"
         body: "Automatically generated code for issue #${{ inputs.ISSUE_NUMBER }}"
