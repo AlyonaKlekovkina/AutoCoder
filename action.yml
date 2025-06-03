@@ -46,16 +46,16 @@ runs:
         ${{ inputs.script_path }}
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ inputs.github_token }}
+        GITHUB_TOKEN: ${{ secrets.github_token }}
         REPOSITORY: ${{ inputs.repository }}
         ISSUE_NUMBER: ${{ inputs.issue_number }}
-        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         LABEL: ${{ inputs.label }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
-        token: ${{ inputs.github_token }}
+        token: ${{ secrets.github_token }}
         branch: autocoder-branch-${{ inputs.issue_number }}
         title: "Autocoder: Code for issue #${{ inputs.issue_number }}"
         body: "Automatically generated code for issue #${{ inputs.issue_number }}"
