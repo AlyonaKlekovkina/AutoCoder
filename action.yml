@@ -32,6 +32,16 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: AutoCoder Action
+      uses: AlyonaKlekovkina/Autocoder@v1.0.0
+      with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} 
+          SCRIPT_PATH: ./scripts/script.sh
+          LABEL: 'autocoder-bot'
 
     - name: Set up environment
       run: |
