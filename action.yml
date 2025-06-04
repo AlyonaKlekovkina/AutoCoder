@@ -39,6 +39,7 @@ runs:
 
     - name: Create output directory
       run: mkdir -p autocoder-bot
+      shell: bash
 
     - name: Generate code from issue
       run: |
@@ -64,10 +65,12 @@ runs:
 
     - name: Display Generated Code using the ls command
       run: ls -R autocoder-artifact/
+      shell: bash
 
     - name: Copy generated files into repo
       run: |
         cp -r autocoder-artifact/* .
+      shell: bash
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
