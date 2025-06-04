@@ -34,11 +34,6 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Configure authenticated Git remote
-      run: |
-        git remote set-url origin https://x-access-token:${{ inputs.GITHUB_TOKEN }}@github.com/${{ inputs.REPOSITORY }}
-      shell: bash
-
     - name: Set up environment
       run: |
         git config --global user.name "autocoder-bot"
@@ -59,37 +54,3 @@ runs:
           "${{ inputs.ISSUE_NUMBER }}" \
           "${{ inputs.OPENAI_API_KEY }}"
       shell: bash
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: autocoder-artifact
-        path: autocoder-bot/
-
-    - name: Download Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: autocoder-artifact
-        path: autocoder-bot/
-
-    - name: Display Generated Code
-      run: ls -R autocoder-bot/
-      shell: bash
-
-    - name: Copy generated files into repo
-      run: |
-        cp -r autocoder-bot/* . 2>/dev/null || :
-        cp -r autocoder-bot/.* . 2>/dev/null || :
-      shell: bash
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v7
-      with:
-        token: ${{ inputs.GITHUB_TOKEN }}
-        branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
-        title: "Autocoder: Code for issue #${{ inputs.ISSUE_NUMBER }}"
-        body: "Automatically generated code for issue #${{ inputs.ISSUE_NUMBER }}"
-        labels: ${{ inputs.LABEL }}
-        commit-message: "Add code for issue #${{ inputs.ISSUE_NUMBER }}"
-        committer: "autocoder-bot <actions@github.com>"
-        author: "autocoder-bot <actions@github.com>"
