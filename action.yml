@@ -34,6 +34,11 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Configure authenticated Git remote
+      run: |
+        git remote set-url origin https://x-access-token:${{ inputs.GITHUB_TOKEN }}@github.com/${{ inputs.REPOSITORY }}
+      shell: bash
+
     - name: Set up environment
       run: |
         git config --global user.name "autocoder-bot"
