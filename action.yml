@@ -72,6 +72,13 @@ runs:
         cp -r autocoder-artifact/* .
       shell: bash
 
+    - name: Commit generated code
+      run: |
+        git checkout -b autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        git add .
+        git commit -m "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
+      shell: bash
+
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
