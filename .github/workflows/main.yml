@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: AutoCoder Action
-        uses: AlyonaKlekovkina/Autocoder@v1.0.2
+        uses: AlyonaKlekovkina/Autocoder@v1.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           REPOSITORY: ${{ github.repository }}
