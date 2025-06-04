@@ -59,6 +59,7 @@ runs:
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
         branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        base: main
         title: "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
         body: "This pull request includes code automatically generated for issue #${{ inputs.ISSUE_NUMBER }}."
         labels: ${{ inputs.LABEL }}
