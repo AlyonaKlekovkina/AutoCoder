@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: AutoCoder Action
+      - name: Run AutoCoder Action
         uses: AlyonaKlekovkina/Autocoder@v1.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -26,14 +26,3 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SCRIPT_PATH: ./scripts/script.sh
           LABEL: 'autocoder-bot'
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          branch: autocoder-branch-${{ github.event.issue.number }}
-          title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
-          body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
-          labels: autocoder-bot
-          committer: "autocoder-bot <actions@github.com>"
-          author: "autocoder-bot <actions@github.com>"
