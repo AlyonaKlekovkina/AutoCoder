@@ -47,10 +47,17 @@ runs:
           "${{ inputs.OPENAI_API_KEY }}"
       shell: bash
 
+    - name: Commit generated files
+      run: |
+        git checkout -b autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        git add autocoder-bot/
+        git commit -m "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
+      shell: bash
+
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
-        token: ${{ github.token }}
+        token: ${{ inputs.GITHUB_TOKEN }}
         branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
         title: "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
         body: "This pull request includes code automatically generated for issue #${{ inputs.ISSUE_NUMBER }}."
