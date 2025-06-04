@@ -74,10 +74,11 @@ runs:
 
     - name: Commit generated code
       run: |
-        git checkout -b autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        BRANCH="autocoder-branch-${{ inputs.ISSUE_NUMBER }}"
+        git checkout -b "$BRANCH"
         git add .
         git commit -m "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
-        git push -u origin autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        git push -u origin "$BRANCH"
       shell: bash
 
     - name: Create Pull Request
