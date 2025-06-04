@@ -50,7 +50,7 @@ runs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
-        token: ${{ inputs.GITHUB_TOKEN }}
+        token: ${{ github.token }}
         branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
         title: "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
         body: "This pull request includes code automatically generated for issue #${{ inputs.ISSUE_NUMBER }}."
