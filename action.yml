@@ -37,6 +37,9 @@ runs:
         mkdir -p autocoder-bot
       shell: bash
 
+    - name: Create output directory
+      run: mkdir -p autocoder-bot
+
     - name: Generate code from issue
       run: |
         chmod +x ${{ inputs.SCRIPT_PATH }}
@@ -47,21 +50,33 @@ runs:
           "${{ inputs.OPENAI_API_KEY }}"
       shell: bash
 
-    - name: Commit generated files
-      run: |
-        git checkout -b autocoder-branch-${{ inputs.ISSUE_NUMBER }}
-        git add autocoder-bot/
-        git commit -m "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
-      shell: bash
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v7
-      with:
-        token: ${{ inputs.GITHUB_TOKEN }}
-        branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
-        base: main
-        title: "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
-        body: "This pull request includes code automatically generated for issue #${{ inputs.ISSUE_NUMBER }}."
-        labels: ${{ inputs.LABEL }}
-        committer: "autocoder-bot <actions@github.com>"
-        author: "autocoder-bot <actions@github.com>"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autocoder-artifact
+          path: autocoder-bot/
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:  
+          name: autocoder-artifact
+          path: autocoder-artifact/
+
+      - name: Display Generated Code using the ls command
+        run: ls -R autocoder-artifact/
+
+      - name: Copy generated files into repo
+        run: |
+          cp -r autocoder-artifact/* .      
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ inputs.GITHUB_TOKEN }}
+          branch: autocoder-branch-${{ github.event.issue.number }}
+          title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
+          body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
+          labels: autocoder-bot
+          committer: "autocoder-bot <actions@github.com>"
+          author: "autocoder-bot <actions@github.com>"
