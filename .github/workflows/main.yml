@@ -2,7 +2,7 @@ name: AutoCodeGen
 
 on:
   issues:
-    types: [labeled, opened, reopened]
+    types: [opened, reopened, labeled]
 
 permissions:
   contents: write
