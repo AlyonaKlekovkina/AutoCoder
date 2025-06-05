@@ -37,10 +37,6 @@ runs:
         mkdir -p autocoder-bot
       shell: bash
 
-    - name: Create output directory
-      run: mkdir -p autocoder-bot
-      shell: bash
-
     - name: Generate code from issue
       run: |
         chmod +x ${{ inputs.SCRIPT_PATH }}
@@ -82,9 +78,9 @@ runs:
       uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
-        branch: autocoder-branch-${{ github.event.issue.number }}
-        title: "Autocoder generated code for issue #${{ github.event.issue.number }}"
-        body: "This pull request includes code automatically generated for issue #${{ github.event.issue.number }}."
+        branch: autocoder-branch-${{ inputs.ISSUE_NUMBER }}
+        title: "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
+        body: "This pull request includes code automatically generated for issue #${{ inputs.ISSUE_NUMBER }}."
         labels: autocoder-bot
         committer: "autocoder-bot <actions@github.com>"
         author: "autocoder-bot <actions@github.com>"
