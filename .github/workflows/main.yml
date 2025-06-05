@@ -14,20 +14,6 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Make script executable
-        run: chmod +x ./scripts/script.sh
-
-      - name: Set up git identity and environment
-        run: |
-          git config --global user.name "autocoder-bot"
-          git config --global user.email "actions@github.com"
-
-      - name: Create output directory
-        run: mkdir -p autocoder-bot
-        
       - name: Run AutoCoder Action
         uses: AlyonaKlekovkina/AutoCoder@v1.0.0
         with:
@@ -37,29 +23,3 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SCRIPT_PATH: ./scripts/script.sh
           LABEL: 'autocoder-bot'
-
-
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: autocoder-artifact
-          path: autocoder-bot/
-
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: autocoder-artifact
-          path: autocoder-artifact/
-
-      - name: Display Generated Code using the ls command
-        run: ls -R autocoder-artifact/
-
-      - name: Copy generated files into repo
-        run: |
-          cp -r autocoder-artifact/* .
-
-      - name: Commit generated code
-        run: |
-          git add .
-          git commit -m "Autocoder generated code for issue #${{ github.event.issue.number }}"
