@@ -62,4 +62,4 @@ jobs:
       - name: Commit generated code
         run: |
           git add .
-          git commit -m "Autocoder generated code for issue #${{ inputs.ISSUE_NUMBER }}"
+          git commit -m "Autocoder generated code for issue #${{ github.event.issue.number }}"
