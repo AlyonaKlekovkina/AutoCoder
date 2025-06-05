@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run AutoCoder
-        uses: AlyonaKlekovkina/AutoCoder@v1
+        uses: AlyonaKlekovkina/AutoCoder@v1.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
@@ -69,7 +69,7 @@ To use a specific version of this action, use the version tag in the uses field.
 yaml
 Copy
 Edit
-uses: AlyonaKlekovkina/AutoCoder@v1
+uses: AlyonaKlekovkina/AutoCoder@v1.0.0
 
 
 Contributing
