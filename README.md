@@ -1,34 +1,42 @@
-AutoCoder
-AutoCoder is a GitHub Action that automates the process of generating code from GitHub Issues using OpenAI's ChatGPT, and creates a pull request with the generated code. It’s designed to streamline feature development and reduce manual coding for well-defined issues.
+# AutoCoder 🤖
 
-Features
-Parses GitHub issues based on a specific label
+A GitHub Action that **automates code generation** from GitHub issues using OpenAI's ChatGPT, then commits the new code and opens a pull request. Think of it as a **feature-by-issue code assistant** right in your CI/CD pipeline! 
 
-Uses OpenAI's ChatGPT API to generate code
+---
 
-Automatically commits code and opens a pull request
+##  Features
 
-Fully configurable and reusable
+-  **Label-driven automation** — Trigger code generation by labeling an issue (default label: `autocoder-bot`)
+-  **ChatGPT-powered coding** — Parses issue descriptions and generates relevant code via OpenAI API
+-  **Auto PR creation** — Pushes the generated code and opens a pull request automatically
+-  **Fully configurable** — Adapt to your repo’s structure and workflow with ease
 
-Inputs
-Name	Required	Description
-github_token	✅	GitHub token used for authentication and to create pull requests
-openai_api_key	✅	API key for accessing the OpenAI API
-repository	✅	The target repository where the action is being executed (owner/repo)
-issue_number	✅	The issue number that triggered the action
-script_path	✅	Path to the script that processes the issue and generates code using ChatGPT
-label	✅	Label that triggers this action (default: autocoder-bot)
+---
 
-Outputs
-Name	Description
-pull_request_url	The URL of the created pull request with the new code
+##  Inputs
 
-Example Usage
-Here is an example of how to use AutoCoder in your workflow:
+| Input Name           | Required | Description |
+|----------------------|:--------:|-------------|
+| `github_token`       |  Yes    | Token for GitHub authentication (use `${{ secrets.GITHUB_TOKEN }}`) |
+| `openai_api_key`     |  Yes    | Your OpenAI API key (`${{ secrets.OPENAI_API_KEY }}`) |
+| `repository`         |  Yes    | Target repo in `owner/repo` format (`${{ github.repository }}`) |
+| `issue_number`       |  Yes    | The number of the issue triggering the action (`${{ github.event.issue.number }}`) |
+| `script_path`        |  Yes    | Path to your script (e.g., `./scripts/script.sh`) that calls ChatGPT |
+| `label`              |  No     | Label to watch for (default: `autocoder-bot`) |
 
-yaml
-Copy
-Edit
+---
+
+##  Outputs
+
+- `pull_request_url`: URL of the pull request created with the generated code
+
+---
+
+##  Usage Example
+
+Add the following workflow to your repository (e.g., `.github/workflows/autocoder.yml`):
+
+```yaml
 name: AutoCoder Workflow
 
 on:
@@ -41,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout the repo
         uses: actions/checkout@v4
 
       - name: Run AutoCoder
@@ -53,25 +61,45 @@ jobs:
           issue_number: ${{ github.event.issue.number }}
           script_path: './scripts/script.sh'
           label: 'autocoder-bot'
+````
 
-Testing & Debugging
-To test your action:
+With this setup:
 
-Create an issue in your repository with a label (e.g., autocoder-bot).
+1. Add the `autocoder-bot` label to an issue in your repo.
+2. The Action runs, triggering your script to generate code via ChatGPT.
+3. A pull request is opened with the suggested code automatically.
 
-Ensure your script.sh properly reads and processes the issue description.
+---
 
-Watch the Actions tab to see if a pull request is generated automatically.
+## Getting Started
 
-Versioning
-To use a specific version of this action, use the version tag in the uses field. For example:
+1. Copy the workflow snippet above into your repo at `.github/workflows/autocoder.yml`.
+2. Create a script (e.g., `scripts/script.sh`) that:
 
-yaml
-Copy
-Edit
-uses: AlyonaKlekovkina/AutoCoder@v1.0.0
+   * Reads the issue content
+   * Sends relevant prompts to ChatGPT
+   * Saves the returned code into working directory files
+3. Set your GitHub secrets:
 
+   * `GITHUB_TOKEN` (provided by GitHub Actions)
+   * `OPENAI_API_KEY` (from your OpenAI account)
 
-Contributing
-Feel free to fork, improve, and submit pull requests! Feedback and contributions are welcome.
+---
+
+## Benefits & Use Cases
+
+* **Speeds up feature development** — Focus on crafting clear issue descriptions; the Action handles boilerplate generation.
+* **Standardizes code scaffolding** — Enforce consistent code patterns generated via prompt.
+* **Low-effort setup** — Add the workflow once and let it run indefinitely.
+* **Highly expandable** — Customize your scripts, prompt engineering, or repository structure as needed.
+
+---
+
+## Contributing
+
+Your contributions are welcome! To get involved:
+
+1. Fork the repo
+2. Make changes (e.g., support additional languages or prompt variations)
+3. Submit a pull request
 
